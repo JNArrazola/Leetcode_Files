@@ -40,32 +40,26 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    bool isInBoard(vector<vector<char>> board, int posX, int posY){
+    bool isInBoard(vector<vector<char>> &board, int posX, int posY){
         return posX>=0&&posY>=0&&posX <= (board.size() - 1)&&posY <= (board[0].size() - 1);
     }
 
     bool search(vector<vector<char>> &board, int posX, int posY, int indexOfWord, string word){
-         if(indexOfWord==word.size())
-                return true;
-        
         if(!isInBoard(board, posX, posY))
             return false;
 
-        if(board[posX][posY]==word[indexOfWord++]){
+        if(board[posX][posY]==word[indexOfWord]){
             board[posX][posY] = ' ';
+            
+            if(indexOfWord==word.size() - 1)
+                return true;
 
-           
-
-            return search(board, posX - 1, posY - 1, indexOfWord, word)||
-            search(board, posX - 1, posY, indexOfWord, word)||
-            search(board, posX - 1, posY + 1, indexOfWord, word)||
-            search(board, posX, posY + 1, indexOfWord, word)||
-            search(board, posX + 1, posY + 1, indexOfWord, word)||
-            search(board, posX + 1, posY, indexOfWord, word)||
-            search(board, posX + 1, posY - 1, indexOfWord, word)||
-            search(board, posX, posY - 1, indexOfWord, word);
+            return search(board, posX - 1, posY, indexOfWord + 1, word)||
+            search(board, posX, posY + 1, indexOfWord + 1, word)||
+            search(board, posX + 1, posY, indexOfWord + 1, word)||
+            search(board, posX, posY - 1, indexOfWord + 1, word);
+            board[posX][posY] = word[indexOfWord];
         }
-
         return false;
     }
 

@@ -39,34 +39,34 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
-public:
-    vector<vector<int>> generate(int numRows) {
-        vector<vector<int>> triangle = {{1}};
-        if(numRows==1)
-            return triangle;
-        triangle.push_back({1,1});
-        if(numRows==2)  
-            return triangle;
+private:    
+    bool isInBoard(vector<vector<char>> board ,int posX, int posY){
+        return posX>=0&&posY>=0&&posX<=(board.size()-1)&&posY<=(board[0].size());
+    }
 
-        int ctr = 1;
-        numRows--;
-        while (ctr < numRows)
-        {
-            vector<int> row;
-            row.push_back(1);
-            for (size_t i = 0; i < triangle[ctr].size() - 1; i++)
-                row.push_back(triangle[ctr][i] + triangle[ctr][i + 1]);
-            row.push_back(1);
-            triangle.push_back(row);
-            ctr++;
+    bool search(vector<vector<char>> board,int posX, int posY, int dirX, int dirY, string word, int index){
+        if(index==(word.size()))
+            return true;
+
+
+        if(board[posX][posY]==word[index]){
+            if(isInBoard(posX + 1, posY - 1))
         }
+
+        return false;
+    }
+    
+public:
+    bool exist(vector<vector<char>>& board, string word) {
         
-    return triangle;
+        return false;
     }
 };
 
 int main()
 {
+    string w = "perro";
+    cout << w.size() << endl;
 
     return 0;
 }
