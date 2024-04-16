@@ -56,7 +56,8 @@
         "chrono": "cpp",
         "map": "cpp",
         "scoped_allocator": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "charconv": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
