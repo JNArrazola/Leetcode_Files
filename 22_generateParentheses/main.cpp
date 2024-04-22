@@ -40,27 +40,27 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-unordered_map<int, int> memo;
-
-int calculateMinimiumCoins(vector<int> &denominations, int amount){
-    if(amount == 0)
-        return amount;
-    if(memo.find(amount)!=memo.end())
-        return memo[amount];
-
-    int answ = INT16_MAX;
-    for (size_t i = 0; i < denominations.size(); i++)
-        if(amount - denominations[i] >= 0)
-            answ = min(answ, calculateMinimiumCoins(denominations, amount - denominations[i]) + 1);
-    
-    return memo[amount] = answ;
-}
-
+class Solution {
+private:
+    void backtracking(vector<string> &answ, string candidate, short open, short close, int n){
+        if(candidate.length() == n*2){
+            answ.push_back(candidate);
+            return;
+        }
+        
+        if(open < n) backtracking(answ, candidate + "(", open + 1, close, n);
+        if(close < open) backtracking(answ, candidate + ")", open, close + 1, n);
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> answ;
+        backtracking(answ, "", 0, 0, n);
+        return answ;
+    }
+};
 
 int main()
 {
-    vector<int> denominations = {5};
-    cout << calculateMinimiumCoins(denominations, 133) << endl;
 
     return 0;
 }

@@ -40,27 +40,27 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-unordered_map<int, int> memo;
+class Solution {
+public:
+    int findCenter(vector<vector<int>>& edges) {
+        unordered_map<int, int> ctr;
+        int n = edges.size();
 
-int calculateMinimiumCoins(vector<int> &denominations, int amount){
-    if(amount == 0)
-        return amount;
-    if(memo.find(amount)!=memo.end())
-        return memo[amount];
-
-    int answ = INT16_MAX;
-    for (size_t i = 0; i < denominations.size(); i++)
-        if(amount - denominations[i] >= 0)
-            answ = min(answ, calculateMinimiumCoins(denominations, amount - denominations[i]) + 1);
-    
-    return memo[amount] = answ;
-}
-
+        for (size_t i = 0; i < n; i++){
+            ctr[edges[i][0]]++;
+            ctr[edges[i][1]]++;
+        }
+        
+        for(const auto &i : ctr)
+            if(i.second == edges.size())
+                return i.first;
+        
+        return 0;
+    }
+};
 
 int main()
 {
-    vector<int> denominations = {5};
-    cout << calculateMinimiumCoins(denominations, 133) << endl;
 
     return 0;
 }
