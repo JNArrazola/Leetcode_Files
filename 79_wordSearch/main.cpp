@@ -40,46 +40,47 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    bool isInBoard(vector<vector<char>> &board, int posX, int posY){
-        return posX>=0&&posY>=0&&posX <= (board.size() - 1)&&posY <= (board[0].size() - 1);
-    }
+    vector<pair<int, int>> dir = {{-1, 0},{0, 1},{1,0},{0, -1}};
 
-    bool search(vector<vector<char>> &board, int posX, int posY, int indexOfWord, string word){
-        if(!isInBoard(board, posX, posY))
+    bool isInBoard(vector<vector<char>> &board, short row, short col){
+        return row>=0&&col>=0&&row<board.size()&&col<board[0].size();
+    }
+    
+    bool lookForWord(vector<vector<char>> &board, short row, short col, short index, short &indexWord, string &answ){
+        if(index == indexWord)
+            return true;
+        if(!isInBoard(board, row, col)||board[row][col]!= answ[index])
             return false;
 
-        if(board[posX][posY]==word[indexOfWord]){
-            board[posX][posY] = ' ';
-            
-            if(indexOfWord==word.size() - 1)
-                return true;
+        char temp = board[row][col];
+        board[row][col] = '0';
 
-            return search(board, posX - 1, posY, indexOfWord + 1, word)||
-            search(board, posX, posY + 1, indexOfWord + 1, word)||
-            search(board, posX + 1, posY, indexOfWord + 1, word)||
-            search(board, posX, posY - 1, indexOfWord + 1, word);
-            board[posX][posY] = word[indexOfWord];
-        }
+        for (size_t i = 0; i < dir.size(); i++)
+            if(lookForWord(board, row + dir[i].first, col + dir[i].second, index + 1, indexWord, answ))
+                return true;
+        board[row][col] = temp;
         return false;
     }
 
-    bool aux(vector<vector<char>> board, int posX, int posY, int indexOfWord, string word){
-        return search(board, posX, posY, indexOfWord, word);
-    }
-
+    
 public:
     bool exist(vector<vector<char>>& board, string word) {
+        short s = word.size();
+        
         for (size_t i = 0; i < board.size(); i++)
             for (size_t j = 0; j < board[0].size(); j++)
-                if(board[i][j]==word[0]&&aux(board, i, j, 0, word))
-                    return true;
-
+                if(board[i][j] == word[0])
+                    if(lookForWord(board, i, j, 0, s, word))
+                        return true;
         return false;
     }
 };
 
 int main()
 {
+    string a = "Joshua";
+
+    cout << a.size() << endl;
 
     return 0;
 }

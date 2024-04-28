@@ -17,8 +17,10 @@
 
 using namespace std;
 
+#pragma GCC optimize("03")
+#pragma GCC target ("avx")
+
 #define PI (3.141592);
-#define e (2.7182);
 
 typedef long long ll;
 typedef long l;
@@ -39,34 +41,25 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
-private:    
-    bool isInBoard(vector<vector<char>> board ,int posX, int posY){
-        return posX>=0&&posY>=0&&posX<=(board.size()-1)&&posY<=(board[0].size());
-    }
-
-    bool search(vector<vector<char>> board,int posX, int posY, int dirX, int dirY, string word, int index){
-        if(index==(word.size()))
-            return true;
-
-
-        if(board[posX][posY]==word[index]){
-            if(isInBoard(posX + 1, posY - 1))
-        }
-
-        return false;
-    }
-    
 public:
-    bool exist(vector<vector<char>>& board, string word) {
+    bool isIsomorphic(string s, string t) {
+        int mpOne[256] = {0};
+        int mpTwo[256] = {0};
         
-        return false;
+        for (size_t i = 0; i < s.size(); i++)
+            if(!mpOne[s[i]]&&!mpTwo[t[i]]){
+                mpOne[s[i]] = t[i];
+                mpTwo[t[i]] = s[i];
+            } else
+                if(mpOne[s[i]] != t[i])
+                    return false;
+
+        return true;
     }
 };
 
 int main()
 {
-    string w = "perro";
-    cout << w.size() << endl;
 
     return 0;
 }
