@@ -51,16 +51,34 @@ struct TreeNode {
 
 class Solution {
 private:
-    bool backTracking(TreeNode *node){
-        if(!(node->left||node->right))
-            return ((node->val) ? true : false);
-        
-        return ((node->val == 2) ? backTracking(node->left)||backTracking(node->right) : backTracking(node->left)&&backTracking(node->right));
-    }
+    bool deleteNodes(TreeNode *node, int &target){
+        if((deleteNodes(node->left, target)||deleteNodes(node->right, target))){
+            if(!node->left&&!node->right){
+                if(node->val == target){
+                    TreeNode *temp = node;
+                    delete temp;
+                    node = nullptr;
+                    return true;
+                }
+                return false;
+            }
+        }
 
+        if(!node->left&&!node->right){
+            if(!node->left&&!node->right){
+                if(node->val == target){
+                    TreeNode *temp = node;
+                    delete temp;
+                    node = nullptr;
+                    return true;
+                }
+                return false;
+            }
+        }
+    }
 public:
-    bool evaluateTree(TreeNode* root) {
-        return backTracking(root);
+    TreeNode* removeLeafNodes(TreeNode* root, int target) {
+        removeLeafNodes(root, target);
     }
 };
 
