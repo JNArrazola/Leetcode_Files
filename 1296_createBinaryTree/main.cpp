@@ -51,27 +51,29 @@ struct TreeNode {
 
 class Solution {
 public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*> nodes;
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
+        unordered_map<int, TreeNode*> hm;
+        vector<int>
 
-        nodes.push(root);
+        for(vector<int> &v : descriptions){
+            if(hm.find(v[0]) == hm.end()){
+                TreeNode *node = new TreeNode();
+                if(v[2])
+                    node->left = new TreeNode(v[1]);
+                else 
+                    node->right = new TreeNode(v[1]);
+                hm[node->val] = node;
+            } else { 
+                if(v[2]){
+                    hm[v[0]]->left = new TreeNode(v[1]);
+                }
+                else {
+                    hm[v[0]]->right = new TreeNode(v[1]);
+                }
 
-        TreeNode *answ = nullptr;
-
-        while (!nodes.empty())
-        {
-            TreeNode* actualNode = nodes.front();
-            nodes.pop();
-
-            if(actualNode->right)
-                nodes.push(actualNode->right);
-            
-            if(actualNode->left)
-                nodes.push(actualNode->left);
-
-            answ = actualNode;
+            } 
         }
-        return answ->val;
+
     }
 };
 

@@ -13,10 +13,14 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <bits/stdc++.h>
+
 using namespace std;
 
+#pragma GCC optimize("03")
+#pragma GCC target ("avx")
+
 #define PI (3.141592);
-#define e (2.7182);
 
 typedef long long ll;
 typedef long l;
@@ -38,19 +42,20 @@ static vector<int> nums=[](){
 
 class Solution {
 public:
-    int pivotInteger(int n) {
-        int totalSum = n*(n+1)/2, start = 0;
+    vector<int> productExceptSelf(vector<int>& nums) {
+        long long product = 1;
+        vector<int> products;
 
-        for (size_t i = 1; i <= n; i++)
-        {
-            start+=i;
-            if(start == totalSum)
-                return i;
-            totalSum-=i;
+        for(const int & n : nums)
+            product*=n;
+
+        for (size_t i = 0; i < nums.size(); i++){
+            if(nums[i] == 0) continue;
+            double number = exp(log(product) - log(nums[i]));
+            products.push_back((int)number);
         }
-        
 
-        return -1;
+        return products;
     }
 };
 

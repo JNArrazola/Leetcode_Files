@@ -57,7 +57,16 @@
         "map": "cpp",
         "scoped_allocator": "cpp",
         "regex": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "complex": "cpp",
+        "forward_list": "cpp",
+        "format": "cpp",
+        "generator": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "stacktrace": "cpp",
+        "text_encoding": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

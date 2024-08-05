@@ -50,28 +50,46 @@ struct TreeNode {
 };
 
 class Solution {
+private:
+    void queueNodes(TreeNode *&nodeOne, TreeNode *&nodeTwo, queue<TreeNode*> &bfs){
+        if(nodeOne)
+            bfs.push(nodeOne);
+        if(nodeTwo)
+            bfs.push(nodeTwo);
+    }
+    
 public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*> nodes;
+    bool isEvenOddTree(TreeNode* root) {
+        queue<TreeNode*> bfs;
+        bfs.push(root);
+        int depth = 0;
+        bool isEven = 1;
 
-        nodes.push(root);
-
-        TreeNode *answ = nullptr;
-
-        while (!nodes.empty())
+        while (!bfs.empty())
         {
-            TreeNode* actualNode = nodes.front();
-            nodes.pop();
-
-            if(actualNode->right)
-                nodes.push(actualNode->right);
+            int n = bfs.size();
+            int toCompare = INT32_MIN;
             
-            if(actualNode->left)
-                nodes.push(actualNode->left);
+            for (size_t i = 0; i < n; i++)
+            {
+                TreeNode *node = bfs.front();
 
-            answ = actualNode;
+                cout << node->val << "|" << toCompare << endl;
+                if(toCompare != INT32_MIN)
+                    if(node->val <= toCompare)
+                        return false;
+            
+                if(isEven)
+                    queueNodes(node->right, node->left, bfs);
+                else 
+                    queueNodes(node->left, node->right, bfs);
+
+                toCompare = node->val;
+                bfs.pop();
+            }
+            isEven = (isEven) ? 0 : 1;
         }
-        return answ->val;
+        return true;
     }
 };
 

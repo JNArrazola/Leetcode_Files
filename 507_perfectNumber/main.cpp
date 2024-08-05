@@ -13,10 +13,14 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <bits/stdc++.h>
+
 using namespace std;
 
+#pragma GCC optimize("03")
+#pragma GCC target ("avx")
+
 #define PI (3.141592);
-#define e (2.7182);
 
 typedef long long ll;
 typedef long l;
@@ -38,19 +42,14 @@ static vector<int> nums=[](){
 
 class Solution {
 public:
-    int pivotInteger(int n) {
-        int totalSum = n*(n+1)/2, start = 0;
+    bool checkPerfectNumber(int num) {
+        int ctr = 0;
 
-        for (size_t i = 1; i <= n; i++)
-        {
-            start+=i;
-            if(start == totalSum)
-                return i;
-            totalSum-=i;
-        }
-        
-
-        return -1;
+        for (size_t i = 1; i <= num/2; i++)
+            if(!(num%i))
+                ctr+=i;
+            
+        return ctr == num;
     }
 };
 

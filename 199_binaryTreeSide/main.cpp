@@ -51,27 +51,33 @@ struct TreeNode {
 
 class Solution {
 public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*> nodes;
+    vector<int> rightSideView(TreeNode* root) {
+        if(!root)
+            return {};
+        
+        queue<TreeNode*> bfs;
+        vector<int> answ;
+        bfs.push(root);
 
-        nodes.push(root);
-
-        TreeNode *answ = nullptr;
-
-        while (!nodes.empty())
+        while (!bfs.empty())
         {
-            TreeNode* actualNode = nodes.front();
-            nodes.pop();
+            int n = bfs.size();
 
-            if(actualNode->right)
-                nodes.push(actualNode->right);
-            
-            if(actualNode->left)
-                nodes.push(actualNode->left);
-
-            answ = actualNode;
+            for (size_t i = 0; i < n; i++)
+            {
+                TreeNode *fr = bfs.front();
+                if(i == n-1)
+                    answ.push_back(fr->val);
+                
+                if(fr->left)
+                    bfs.push(fr->left);
+                if(fr->right)
+                    bfs.push(fr->right);
+                
+                bfs.pop();
+            }
         }
-        return answ->val;
+        return answ;
     }
 };
 

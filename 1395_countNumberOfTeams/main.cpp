@@ -40,38 +40,39 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
 class Solution {
-public:
-    int findBottomLeftValue(TreeNode* root) {
-        queue<TreeNode*> nodes;
+private:
+    int size;
 
-        nodes.push(root);
-
-        TreeNode *answ = nullptr;
-
-        while (!nodes.empty())
-        {
-            TreeNode* actualNode = nodes.front();
-            nodes.pop();
-
-            if(actualNode->right)
-                nodes.push(actualNode->right);
-            
-            if(actualNode->left)
-                nodes.push(actualNode->left);
-
-            answ = actualNode;
+    void solve(int pos, int lastNumber, bool &hl, int ctr, int &answ, vector<int>& rating){
+        if(ctr == 3){
+            answ++;
+            return;
         }
-        return answ->val;
+
+        for (short i = pos; i < size; i++)
+        {
+            bool eval = (hl) ? lastNumber > rating[i] : lastNumber < rating[i];
+
+            if(eval)
+                solve(i + 1, rating[i], hl, ctr + 1, answ, rating);
+        }
+    }
+public:
+    int numTeams(vector<int>& rating) {
+        int answ = 0;
+        size = rating.size();
+
+        for (short i = 0; i < size; i++)
+        {
+            bool v = true;
+            solve(i + 1, rating[i], v, 1, answ, rating);
+
+            v = false;
+            solve(i + 1, rating[i], v, 1, answ, rating);
+        }
+        
+        return answ;
     }
 };
 

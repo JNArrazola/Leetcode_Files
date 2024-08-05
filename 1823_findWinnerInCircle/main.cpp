@@ -13,10 +13,14 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <bits/stdc++.h>
+
 using namespace std;
 
+#pragma GCC optimize("03")
+#pragma GCC target ("avx")
+
 #define PI (3.141592);
-#define e (2.7182);
 
 typedef long long ll;
 typedef long l;
@@ -38,19 +42,29 @@ static vector<int> nums=[](){
 
 class Solution {
 public:
-    int pivotInteger(int n) {
-        int totalSum = n*(n+1)/2, start = 0;
+    int findTheWinner(int n, int k) {
+        vector<short> v(n);
 
-        for (size_t i = 1; i <= n; i++)
+        for (short i = 0; i < n; i++)
+            v[i] = i;
+        
+        short index = 0, reps = 1;
+
+        while (v.size() != 1)
         {
-            start+=i;
-            if(start == totalSum)
-                return i;
-            totalSum-=i;
+            if(reps == k){
+                v.erase(v.begin() + index);
+                reps = 1;
+            } else {
+                reps++;
+                index++;
+            }
+
+            if(index >= v.size())
+                index = 0;
         }
         
-
-        return -1;
+        return v[0] + 1;
     }
 };
 

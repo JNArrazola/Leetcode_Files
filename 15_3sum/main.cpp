@@ -41,54 +41,45 @@ static vector<int> nums = []()
     return vector<int>{};
 }();
 
-class Solution
-{
+class Solution {
 private:
-    unordered_map<int, int> mp;
-
-    void backtracking(vector<vector<int>> &answ, int actualSum, vector<int> &candidate, int index, vector<int> &nums)
-    {
-        if(candidate.size() == 2){
-
-            if(mp[actualSum * (-1)] != 0){
-                candidate.push_back(mp[(-1)*actualSum]);
-                answ.push_back(candidate);
-            }
+    vector<vector<int>> answ;
+    unordered_set<string> ids;
+    void backtracking(vector<int> &nums, vector<int> &possibleAnsw, int number, int position){
+        
+        if(possibleAnsw.size() == 3){
+            string id = "";
+            for(const int & n : possibleAnsw)
+                id+=to_string(n);
+            
+            if(ids.find(id) != ids.end())
+                return;
+            ids.insert(id);
+            if(!number)
+                answ.push_back(possibleAnsw);
             return;
         }
 
-        if (index == nums.size())
-            return;
-
-        for (size_t i = index; i < nums.size(); i++)
+        int lastNumber;
+        for (size_t i = position; i < nums.size(); i++)
         {
-            candidate.push_back(nums[i]);
-            mp[nums[i]]--;
-            backtracking(answ, actualSum + nums[i], candidate, i + 1, nums);
-
-            if (i < nums.size() - 1 && nums[i + 1] == nums[i])
-            {
-                while (i < nums.size() - 1 && nums[i + 1] == nums[i]){
+            lastNumber = nums[i];
+            possibleAnsw.push_back(nums[i]);
+            backtracking(nums, possibleAnsw, number + nums[i], i + 1);
+            possibleAnsw.pop_back();
+            
+            if(lastNumber)
+                while (i < nums.size() - 1 && lastNumber == nums[i + 1])
                     i++;
-                    mp[nums[i]]--;
-                }
-            }
-            candidate.pop_back();
         }
     }
 
 public:
-    vector<vector<int>> threeSum(vector<int> &nums)
-    {
-        vector<vector<int>> answ;
-        vector<int> candidate;
+    vector<vector<int>> threeSum(vector<int>& nums) {
+
         sort(nums.begin(), nums.end());
-
-        for(const int &i : nums)
-            mp[i]++;
-        
-
-        backtracking(answ, 0, candidate, 0, nums);
+        vector<int> possibleAnsw = {};
+        backtracking(nums, possibleAnsw, 0, 0);
         return answ;
     }
 };

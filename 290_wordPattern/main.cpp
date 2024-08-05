@@ -43,19 +43,34 @@ static vector<int> nums=[](){
 class Solution {
 public:
     bool wordPattern(string pattern, string s) {
-        unordered_map<string, char> mp;
-
-        int ctrWord = 0;
+        vector<string> words;
+        unordered_map<char, string> hm;
+        unordered_set<string> mappedWords;
 
         string formedWord = "";
-        for (size_t i = 0; i < s.size(); i++)
-        {
-            if(s[i] == ' '||i == s.size() - 1){
-                if(i == s.size() - 1)
-                    formedWord+=s[i];
+        for(const char &c : s)
+            if(c == ' '){
+                words.push_back(formedWord);
+                formedWord = "";
+            } else 
+                formedWord+=c;
+        
+        words.push_back(formedWord);
 
-                if(mp.find(formedWord) != mp.end())
+        if(pattern.length() != words.size())
+            return false;
+        
+        for (size_t i = 0; i < words.size(); i++)
+        {
+            if(hm.find(pattern[i])==hm.end()){
+                if(mappedWords.find(words[i])!=mappedWords.end())
+                    return false;
+
+                hm[pattern[i]] = words[i];
+                mappedWords.insert(words[i]);
             }
+            else if(hm[pattern[i]] != words[i])
+                return false;
         }
         
         return true;
