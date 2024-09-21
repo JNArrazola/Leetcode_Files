@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,33 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+private: 
+    int n;
+    int solve(vector<int>& nums, int index, vector<vector<int>>& dp, bool tookFirst){
+        if(index>=n)
+            return 0;
+
+        if(index == n - 1)
+            return dp[index][tookFirst] = (tookFirst) ? 0 : nums[index];
+        
+        if(dp[index][(tookFirst) ? 1 : 0] != -1)
+            return dp[index][tookFirst];
+
+        return dp[index][tookFirst] = max(nums[index] + solve(nums, index + 2, dp, tookFirst), solve(nums, index + 1, dp, tookFirst));
+    }
+    
+public:
+    int rob(vector<int>& nums) {
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(2, -1));
+
+        return max(solve(nums, 1, dp, false), nums[0] + solve(nums, 2, dp, true));
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

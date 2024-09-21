@@ -3,23 +3,35 @@
 using namespace std;
 
 class Solution {
+private:
+    string reverse(string s){
+        for (size_t i = 0; i < s.size()/2; i++)
+            swap(s[i], s[s.size() - 1 - i]);
+        return s;
+    }  
 public:
     string reverseWords(string s) {
-        int i = 0, j = 0;
+        int ptrOne = 0, ptrTwo = 0;
+        string answ = "";
 
-
-        while (i < s.size())
+        for (size_t i = 0; i < s.size(); i++)
         {
-            if(s[j]==' '){
-                for (size_t k = i; k <= j/2; k++)
-                    swap(s[k], s[j-k-1]);
-                i++;
-                j = i;
-            } else {
-                j++;
-            }
+            if(s[i] == ' ' || i == s.size() - 1){
+                if(i == s.size() - 1)
+                    ptrTwo++;
+                
+                answ+=reverse(s.substr(ptrOne, ptrTwo - ptrOne));
+
+                if(i != s.size() - 1)
+                    answ+=" ";
+
+                ptrOne = i + 1;
+                ptrTwo = i + 1;
+            } else 
+                ptrTwo++;
         }
-        return s;
+    
+        return answ;
     }
 };
 

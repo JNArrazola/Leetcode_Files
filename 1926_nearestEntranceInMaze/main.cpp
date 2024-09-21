@@ -40,42 +40,36 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
 class Solution {
+private:
+    bool isInBoard(vector<vector<char>>& maze, int &x, int &y){
+        return x>=0&&y>=0&&x<maze.size()&&y<maze[0].size();
+    }
+    
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        maze[entrance[0]][entrance[1]] = '*';
+        queue<pair<int, int>> coords;
+        coords.push({entrance[0], entrance[1]});
+        int itr = 0;
 
-        while (!bfs.empty())
+        while (!coords.empty())
         {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
+            int size = coords.size();
 
-            for (size_t i = 1; i < n; i++)
+            for (size_t i = 0; i < size; i++)
             {
-                TreeNode *node = bfs.front();
-                bfs.pop();
+                pair<int, int> pr = coords.front();
+
+                if(!isInBoard(maze, pr.first + 1, pr.second)&&maze[pr.first+1][pr.second])
+
             }
             
 
-
-
+            itr++;
         }
         
-        return true;
+
     }
 };
 

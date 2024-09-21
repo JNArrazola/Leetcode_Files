@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,42 +41,38 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
 class Solution {
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        int start = 0;
+        unordered_map<string, int> mp;
+        vector<string> answ;
 
-        while (!bfs.empty())
+        s1+=" "; 
+        s2+=" "; 
+
+        for (size_t i = 0; i < s1.size(); i++)
         {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
+            if(s1[i] == ' '){
+                mp[s1.substr(start, i - start)]++;
+                start = i + 1;
             }
-            
-
-
-
         }
-        
-        return true;
+
+        start = 0;
+        for (size_t i = 0; i < s2.size(); i++)
+        {
+            if(s2[i] == ' '){
+                mp[s2.substr(start, i - start)]++;
+                start = i + 1;
+            }
+        }
+
+        for(auto itr : mp)
+            if(itr.second == 1)
+                answ.push_back(itr.first);
+
+        return answ;
     }
 };
 

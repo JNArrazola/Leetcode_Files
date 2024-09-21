@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,34 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int prod = 1, leftCorner = 0, answ = 0;
+
+        for (int i = 0; i < nums.size(); i++)
+        {
+            prod*=nums[i];
+
+            if(nums[i] < k)
+                answ++;
+
+            if(prod < k)
+                answ++;
+            else {
+                while (leftCorner < i && prod >= k)
+                    prod/=nums[leftCorner++];
+
+                if(prod < k)
+                    answ++;
+            }
+        }
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

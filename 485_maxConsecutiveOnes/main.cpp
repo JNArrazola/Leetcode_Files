@@ -40,15 +40,27 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int ctr = 0, answ = 0;
+
+        for (size_t i = 0; i < nums.size(); i++)
+        {
+            if(nums[i] == 0){
+                answ = max(answ, ctr);
+                ctr = 0;
+            } else 
+                ctr++;
+        }
+                answ = max(answ, ctr);
+        
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

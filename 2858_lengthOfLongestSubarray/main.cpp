@@ -40,15 +40,29 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int maxSubarrayLength(vector<int>& nums, int k) {
+        int i = 0, j = 0, answ = -1;
+        unordered_map<int, int> mp;
+
+
+        while (j != nums.size() - 1)
+        {
+            if(mp[nums[j]] < k){
+                mp[nums[j++]]++;
+                answ = max(answ, j - i);
+            } else if(mp[nums[j]] >= k){
+                mp[nums[i++]]--;
+            } else 
+                i++;
+        }        
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

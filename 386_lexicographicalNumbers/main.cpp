@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -41,18 +42,27 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
+private:
+    vector<int> nums;
+    int n;
+    void tree(int num){
+        if(num > n)
+            return;
+
+        nums.push_back(num);
+
+        for (size_t i = 0; i < 10; i++)
+            tree(num*10 + i);
+    }
+    
 public:
-    int sumOfUnique(vector<int>& nums) {
-        unordered_map<int, int> hm;
-        int answ = 0;
+    vector<int> lexicalOrder(int n) {
+        this->n = n;
+
+        for (size_t i = 1; i < 10; i++)
+            tree(i);
         
-        for(const int &num : nums) 
-            hm[num]++;
-        
-        for(auto &n : hm)
-            if(n.second<2)
-                answ+=n.first;
-        return answ;
+        return nums;
     }
 };
 

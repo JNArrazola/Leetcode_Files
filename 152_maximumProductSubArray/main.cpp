@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,31 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if(nums.size() == 1)
+            return nums[0];
+
+        int answ = 0, prod1 = 1, prod2 = 1, n = nums.size();
+
+        for (size_t i = 0; i < n; i++)
+        {   
+            prod1 *= nums[i];
+            prod2 *= nums[n - i -1];
+
+            answ = max(prod1, max(prod2, answ));
+
+            if(!prod1) prod1 = 1;
+            if(!prod2) prod2 = 1;
+        }
+        
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

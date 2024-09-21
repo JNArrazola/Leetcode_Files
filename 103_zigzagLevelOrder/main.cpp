@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -51,31 +52,39 @@ struct TreeNode {
 
 class Solution {
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if(!root)
+            return {};
+
         queue<TreeNode*> bfs;
+        vector<vector<int>> answ;
+        bool LtoR = true;
         bfs.push(root);
 
         while (!bfs.empty())
         {
+            vector<int> temp;
             int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
 
-            for (size_t i = 1; i < n; i++)
+            for (size_t i = 0; i < n; i++)
             {
                 TreeNode *node = bfs.front();
                 bfs.pop();
+                temp.push_back(node->val);
+
+                if(node->left) bfs.push(node->left);
+                if(node->right) bfs.push(node->right);
             }
             
+            if(!LtoR)
+                reverse(temp.begin(), temp.end());
 
+            answ.push_back(temp);
 
-
+            LtoR = !LtoR;
         }
         
-        return true;
+        return answ;
     }
 };
 

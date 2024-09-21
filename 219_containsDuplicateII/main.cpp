@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,42 +41,33 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
 class Solution {
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
-
-        while (!bfs.empty())
-        {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
-
-
-
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        
+        
+        if(k >= nums.size()){
+            for (size_t i = 0; i < nums.size(); i++)
+                if(nums[i] == nums[0])
+                    return true;
+            return false;
         }
         
-        return true;
+        int i = 0, j = i + 1;
+
+        while (j <= k)
+            if(nums[i] == nums[j++]){
+                cout << "es igual en " << --i << " " << --j << endl;
+                return true;
+            }
+        
+        while (j < nums.size())
+            if(nums[i++] == nums[j++]){
+                cout << "es igual en " << --i << " " << --j << endl;
+                return true;
+            }
+        
+        return false;
     }
 };
 

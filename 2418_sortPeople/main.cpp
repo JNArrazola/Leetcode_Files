@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,26 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+        unordered_map<int, string> parity;
+
+        for (size_t i = 0; i < names.size(); i++)
+            parity.insert({heights[i], names[i]});
+        
+        sort(heights.begin(), heights.end());
+
+        vector<string> answ;
+        for (int i = heights.size() - 1; i >= 0; i--)
+            answ.push_back(parity[heights[i]]);
+        
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

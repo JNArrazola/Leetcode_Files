@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,29 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> hm;
+        int sum = 0, answ = 0;
+
+        for (size_t i = 0; i < nums.size(); i++)
+        {
+            sum+=nums[i];
+
+            if(sum == k)
+                answ++;
+            else if(hm.find(sum - k) != hm.end())
+                answ+=hm[sum - k];
+            hm[sum]++;
+        }
+        
+        return answ;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

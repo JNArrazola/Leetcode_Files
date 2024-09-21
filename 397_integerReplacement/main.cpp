@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,29 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+private:
+    unordered_map<long, long> memo;
+    int solve(long n){
+        if(memo.find(n) != memo.end())
+            return memo[n];
+
+        if(n == 1)
+            return 0;
+
+        if(!(n%2))
+            return memo[n] = 1 + solve(n/2);
+        
+        return memo[n] = min(1 + solve(n-1), 1+solve(n+1));
+    }
+public:
+    int integerReplacement(int n) {
+        return solve(n);
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

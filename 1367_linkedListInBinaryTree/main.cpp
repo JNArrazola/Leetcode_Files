@@ -40,6 +40,14 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -50,32 +58,33 @@ struct TreeNode {
 };
 
 class Solution {
-public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+private: 
+    private:
+        bool dfs(ListNode *head, TreeNode *node){
+            if(!head)
+                return true;
+            if(!node)
+                return false;
 
-        while (!bfs.empty())
-        {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
-
-
-
+            if(head->val == node->val)
+                if(dfs(head->next, node->left) || dfs(head->next, node->right))
+                    return true;
+            return false;
         }
-        
-        return true;
+    
+        bool goThrough(ListNode *head, TreeNode *node){
+            if(!node)
+                return false;
+
+            if(dfs(head, node))
+                return true;
+            
+            return goThrough(head, node->left) || goThrough(head, node->right);
+        }
+
+public:
+    bool isSubPath(ListNode* head, TreeNode* root) {
+        return goThrough(head, root);
     }
 };
 

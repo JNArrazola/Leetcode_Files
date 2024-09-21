@@ -50,32 +50,25 @@ struct TreeNode {
 };
 
 class Solution {
-public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
-
-        while (!bfs.empty())
-        {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
-
-
-
+private:
+    void dfs(TreeNode *node, int localMax, int &answ){
+        if(!node)
+            return;
+        if(node->val >= localMax){
+            localMax = max(node->val, localMax);
+            answ++;
         }
-        
-        return true;
+
+        dfs(node->left, localMax, answ);
+        dfs(node->right, localMax, answ);
+    }
+    
+public:
+    int goodNodes(TreeNode* root) {
+        int answ = 1;
+        dfs(root->left, root->val, answ);
+        dfs(root->right, root->val, answ);
+        return answ;
     }
 };
 

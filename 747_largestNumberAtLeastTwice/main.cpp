@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,30 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+public:
+    int dominantIndex(vector<int>& nums) {
+        pair<int, int> p = {INT32_MIN, -1};
+
+
+        for (size_t i = 0; i < nums.size(); i++)
+        {
+            if(nums[i] > p.first){
+                p.first = nums[i];
+                p.second = i;
+            }
+        }
+        
+        for (size_t i = 0; i < nums.size(); i++)
+            if(i!=p.second&&nums[i]*2 > p.first)
+                return -1;
+        
+        return p.second;
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

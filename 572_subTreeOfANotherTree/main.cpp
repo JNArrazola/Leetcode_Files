@@ -50,32 +50,32 @@ struct TreeNode {
 };
 
 class Solution {
-public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+private:
+    bool dfs(TreeNode *node, TreeNode *subRoot, bool searchingSubTree){
+        if(!node||!subRoot){
+            if(!searchingSubTree)
+                return false;
 
-        while (!bfs.empty())
-        {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
-
-
-
+            return !node&&!subRoot;
         }
+
+        if(searchingSubTree)
+            if(node->val != subRoot->val)
+                return false;
+
+        if(node->val == subRoot->val)
+            if(dfs(node->left, subRoot->left, true) && dfs(node->right, subRoot->right, true))
+                return true;
+            else 
+                if(searchingSubTree)
+                    return false;
         
-        return true;
+        return dfs(node->left, subRoot, false) || dfs(node->right, subRoot, false);
+    }
+    
+public:
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        return dfs(root, subRoot, false);
     }
 };
 

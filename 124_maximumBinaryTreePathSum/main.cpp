@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -50,32 +51,28 @@ struct TreeNode {
 };
 
 class Solution {
-public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+private:
+    unordered_map<int, int> dp;
+    int mx = INT32_MIN;
 
-        while (!bfs.empty())
-        {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
+    int solve(TreeNode *node){
+        if(!node)
+            return 0;
 
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
+        if(dp.find(node->val)!=dp.end())
+            return dp[node->val];
 
-
-
-        }
         
-        return true;
+        int left = max(node->val + solve(node->left), solve(node->left));
+        int rigth = max(node->val + solve(node->right), solve(node->right));
+
+        return dp[node->val] = max(mx, left + rigth);
+    }
+
+    
+public:
+    int maxPathSum(TreeNode* root) {
+        return solve(root);
     }
 };
 

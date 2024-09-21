@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,15 +41,30 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
+class Solution {
+private:
+    int solve(vector<int> &nums, int index, bool pick, vector<vector<int>> &dp){
+        if(index>=nums.size())
+            return pick ? 0 : -1e5;
+        
+        if(dp[pick][index]!=-1)
+            return dp[pick][index];
+
+        if(pick)
+            return dp[pick][index] = max(0, nums[index] + solve(nums, index + 1, true, dp));
+        
+        return dp[pick][index] = max(solve(nums, index + 1, false, dp), nums[index] + solve(nums, index+1, true, dp));
+    }
+    
+public:
+    int maxSubArray(vector<int>& nums) {
+        vector<vector<int>> dp(2, vector<int>(nums.size(), -1));
+        return solve(nums, 0, false, dp);
+    }
+};
+
 int main()
 {
-    vector<int> p = {1,2,3,4,5};
 
-    for (size_t i = 0; i < p.size(); i++)
-        if(i >= 2 && i <= 5)
-            p.erase(p.begin() + i);
-    
-    for(const int &i : p)
-        cout << i << endl;
     return 0;
 }

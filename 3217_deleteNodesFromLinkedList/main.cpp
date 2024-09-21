@@ -40,42 +40,40 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-struct TreeNode {
+struct ListNode {
     int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
-
+    
 class Solution {
 public:
-    bool isEvenOddTree(TreeNode* root) {
-        bool isEven = true;
-        queue<TreeNode*> bfs;
-        bfs.push(root);
+    ListNode* modifiedList(vector<int>& nums, ListNode* head) {
+        unordered_set<int> dic = {nums.begin(), nums.end()};
 
-        while (!bfs.empty())
+        while (dic.find(head->val) != dic.end())
         {
-            int n = bfs.size();
-            TreeNode* temp = bfs.front(), *prev = temp;
-            int firstVal = fn->val;
-            bfs.pop();
-            
-
-            for (size_t i = 1; i < n; i++)
-            {
-                TreeNode *node = bfs.front();
-                bfs.pop();
-            }
-            
-
-
-
+            ListNode *temp = head;
+            head = head->next;
+            delete temp;
         }
         
-        return true;
+        int pos = 0;
+        ListNode *ptr = head;
+
+        while (ptr->next)
+        {   
+            if(dic.find(ptr->next->val) != dic.end()){
+                ListNode *temp = ptr->next;
+                ptr->next = ptr->next->next;
+                delete temp;
+            } else 
+                ptr = ptr->next;
+        }
+        
+        return head;
     }
 };
 
