@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -41,28 +42,22 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
-private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
-
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
-    }
-    
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
-        return answ;
+    vector<int> arrayRankTransform(vector<int>& arr) {
+        vector<int> cpy = arr;
+        unordered_map<int, int> rankings;
+        int ctr = 1;
+
+        sort(cpy.begin(), cpy.end());
+
+        for(const int & i : cpy)
+            if(rankings.find(i) == rankings.end())
+                rankings[i] = ctr++;
+
+        for (size_t i = 0; i < arr.size(); i++)
+            arr[i] = rankings[arr[i]];
+
+        return arr;
     }
 };
 

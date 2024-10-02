@@ -42,52 +42,37 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    vector<vector<int>> dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-    
-    bool isInBoard(vector<vector<int>> &grid, int row, int col){
-        return row>=0&&col>=0&&row<grid.size()&&col<grid[0].size();
-    }
-
-    void dfs(vector<vector<int>> &grid, int row, int col, int ctrNoObstacle, int &ctrEmpty, int &answ){
-        if(!isInBoard(grid, row, col)||grid[row][col] == -1)
-            return;
-
-        if(grid[row][col] == 2){
-            cout << "llegue" << endl;
-            cout << ctrNoObstacle << endl;
-            cout << ctrEmpty << endl;
-            cout << endl;
-            if(ctrEmpty - 1 == ctrNoObstacle)
-                answ++;
-            return;
-        }
-
-        int temp = grid[row][col];
-        grid[row][col] = -1;
-        for(const vector<int> &v : dir)
-            dfs(grid, row + v[0], col + v[1], ctrNoObstacle + 1, ctrEmpty, answ);
+    int solve(int x, int y, int &ctr, vector<vector<int>>& grid){
+        if(x < 0 ||  y < 0 || x == grid.size() || y == grid[0].size() || grid[x][y] == -1)
+            return 0;
         
-        grid[row][col] = temp;
+        if(grid[x][y] == 2)
+            return (!ctr) ? 1 : 0;
+        
+        int tmp = grid[x][y];
+        grid[x][y] = -1;
+        
+        ctr--;
+        int paths = solve(x-1, y, ctr, grid) + solve(x, y - 1, ctr, grid) + solve(x, y + 1, ctr, grid) + solve(x+1, y, ctr, grid);
+        ctr++;
+        grid[x][y] = tmp;
+        return paths;
     }
-
+    
 public:
     int uniquePathsIII(vector<vector<int>>& grid) {
-        int ctrEmpty = 0, row = 0, col = 0, answ = 0;
+        int idx = -1, idy = -1, ctr = 0;
 
         for (size_t i = 0; i < grid.size(); i++)
-        {
             for (size_t j = 0; j < grid[0].size(); j++)
-            {
                 if(grid[i][j] == 1){
-                    row = i;
-                    col = j;
-                } else if(grid[i][j] == 0)
-                    ++ctrEmpty;
-            }
-        }
-        
-        dfs(grid, row, col, 0, ctrEmpty, answ);
-        return answ;
+                    idx = i;
+                    idy = j;
+                    ctr++;
+                } else if(!grid[i][j])
+                    ctr++;
+
+        return solve(idx, idy, ctr, grid);
     }
 };
 

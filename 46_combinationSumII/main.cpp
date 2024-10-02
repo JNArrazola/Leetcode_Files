@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -43,25 +44,32 @@ static vector<int> nums=[](){
 class Solution {
 private:
     vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
+    void backtracking(int idx, vector<int> &candidate, vector<int> &candidates, int obj){
+        if(!obj){
+            answ.push_back(candidate);
             return;
         }
 
-        for (size_t i = start; i < candidates.size(); i++)
+        if(obj < 0)
+            return;
+
+        for (size_t i = idx; i < candidates.size(); i++)
         {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
+            if(i > idx && candidates[i] == candidates[i - 1]) continue;
+
+            if(candidates[i] > obj) continue;
+
+            candidate.push_back(candidates[i]);
+            backtracking(i + 1, candidate, candidates, obj - candidates[i]);
+            candidate.pop_back();
         }
     }
     
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> combination;
+        backtracking(0, combination, candidates, target);
         return answ;
     }
 };

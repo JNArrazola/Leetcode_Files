@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -42,26 +43,26 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
+    int getSum(int &num){
+        int sum = 0;
 
-        for (size_t i = start; i < candidates.size(); i++)
+        while (num >= 10)
         {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
+            sum+=num%10;
+            num/=10;
         }
+        
+        sum+=num;
+
+        return sum;
     }
-    
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
+    int minElement(vector<int>& nums) {
+        int answ = INT32_MAX;
+
+        for (size_t i = 0; i < nums.size(); i++)
+            answ = min(answ, getSum(nums[i]));
+
         return answ;
     }
 };

@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -40,31 +41,42 @@ static vector<int> nums=[](){
     return vector<int>{};
 }();
 
-class Solution {
+class CustomStack {
 private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
+    int k;  
+    vector<int> st;
 
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
+public:
+    CustomStack(int maxSize) {
+        this->k = maxSize;
     }
     
-public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
-        return answ;
+    void push(int x) {
+        if(k > st.size())
+            st.push_back(x);
+    }
+    
+    int pop() {
+        if(st.empty())
+            return -1;
+        int num = st[st.size() - 1];
+        st.pop_back();
+        return num;
+    }
+    
+    void increment(int obj, int val) {
+        for (size_t i = 0; i < obj && i < st.size(); i++)
+            st[i]+=val;
     }
 };
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack* obj = new CustomStack(maxSize);
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * obj->increment(k,val);
+ */
 
 int main()
 {

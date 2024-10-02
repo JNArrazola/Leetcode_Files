@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -42,27 +43,24 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
+    int solve(int idx, int pick, int ctr, vector<int>& satisfaction, vector<vector<int>>& dp){
+        if(idx == satisfaction.size())
+            return 0;
 
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
+        if(dp[pick][idx] != -1)
+            return dp[pick][idx];
+        
+        if(pick)    
+            return dp[pick][idx] = max(satisfaction[idx] * ctr + solve(idx + 1, pick, ctr + 1, satisfaction, dp), 0);
+        
+        return dp[pick][idx] = max(satisfaction[idx] * ctr + solve(idx + 1, 1, ctr+1, satisfaction, dp), max(solve(idx + 1, 0, ctr, satisfaction, dp), 0));
     }
-    
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
-        return answ;
+    int maxSatisfaction(vector<int>& satisfaction) {
+        sort(satisfaction.begin(), satisfaction.end());
+        vector<vector<int>> dp(2, vector<int>(satisfaction.size(), -1));
+
+        return solve(0, 0, 0, satisfaction, dp);
     }
 };
 

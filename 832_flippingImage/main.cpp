@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -41,28 +42,17 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
-private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
-
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
-    }
-    
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
-        return answ;
+    vector<vector<int>> flipAndInvertImage(vector<vector<int>>& image) {
+        for (int i = 0; i < image.size(); i++)
+            for (int j = 0; j < image[0].size()/2; j++)
+                swap(image[i][j], image[i][image[0].size() - j - 1]);
+        
+        for (size_t i = 0; i < image.size(); i++)
+            for (size_t j = 0; j < image[0].size(); j++)
+                image[i][j] = (image[i][j] == 1 ? 0 : 1);
+
+        return image;
     }
 };
 

@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -41,27 +42,29 @@ static vector<int> nums=[](){
 }();
 
 class Solution {
-private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
-
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
-    }
-    
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
+    string decodeMessage(string key, string message) {
+        unordered_map<char, char> mp;
+
+        int ctr = 0;
+
+        for (size_t i = 0; i < key.size(); i++)
+        {
+            if(key[i] == ' ') continue;
+
+            if(mp.find(key[i]) == mp.end())
+                mp[key[i]] = 'a' + ctr++;
+        }
+        
+        string answ = "";
+        for (size_t i = 0; i < message.size(); i++)
+        {
+            if(message[i] == ' ')
+                answ+=" ";
+            else 
+                answ+=mp[message[i]];
+        }
+        
         return answ;
     }
 };

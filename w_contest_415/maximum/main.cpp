@@ -13,6 +13,7 @@
 #include <math.h>
 #include <iomanip>
 #include <bitset>
+#include <deque>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -42,27 +43,26 @@ static vector<int> nums=[](){
 
 class Solution {
 private:
-    vector<vector<int>> answ;
-    void backtracking(int target, vector<int>& comb, vector<int> &candidates, int start){
-        if(!target){
-            answ.push_back(comb);
-            return;
-        }
+    long long solve(vector<int>& a, vector<int>& b, int idx1, int idx2, vector<vector<long long>> &dp){
+        if(idx1 == a.size())
+            return 0;
+        if(idx2 == b.size())
+            return -1e6;
 
-        for (size_t i = start; i < candidates.size(); i++)
-        {
-            if(candidates[i] > target) continue;
-            comb.push_back(candidates[i]);
-            backtracking(target - candidates[i], comb, candidates, i);
-            comb.pop_back();
-        }
+        if(dp[idx1][idx2] != -1)
+            return dp[idx1][idx2];
+
+
+        long long take = (long long)a[idx1]*b[idx2] + (long long)solve(a, b, idx1 + 1, idx2 + 1, dp);
+        long long dont_take = (long long)solve(a, b, idx1, idx2+1, dp);
+
+        return dp[idx1][idx2] = max(take, dont_take);
     }
     
 public:
-    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> comb;
-        backtracking(target, comb, candidates, 0);
-        return answ;
+    long long maxScore(vector<int>& a, vector<int>& b) {
+        vector<vector<long long>> dp(5, vector<long long>(b.size(), -1));
+        return solve(a, b, 0, 0, dp);
     }
 };
 
