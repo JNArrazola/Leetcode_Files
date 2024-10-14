@@ -35,34 +35,34 @@ using hm = unordered_map<J, A>;
 template <typename R>
 using st = stack<R>;
 
+static vector<int> nums=[](){
+    std::ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return vector<int>{};
+}();
+
 class Solution {
-private:
-    int solve(int amount, const vector<int> &coins, vector<int> &dp){
-        if(!amount)
-            return 0;
-
-        if(dp[amount] != -1)
-            return dp[amount];
-
-        int answ = 1e6;
-        for (size_t i = 0; i < coins.size(); i++)
-            if(amount - coins[i] >= 0)
-                answ = min(answ, 1 + solve(amount - coins[i], coins, dp));
-        return dp[amount] = answ;
-    }
-
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        int answ = solve(amount, coins, dp);
-        return answ >= 1e6 ? -1 : answ;
+    long long dividePlayers(vector<int>& skill) {
+        int n = skill.size(), i = 0, j = n - 1;
+        long long lastSum, answ = 0;
+        sort(skill.begin(), skill.end());
+
+        lastSum = skill[i] + skill[j];
+        answ+=(skill[i++]*skill[j--]);
+
+        while (i < j)
+            if(skill[i] + skill[j] == lastSum)
+                answ+=(skill[i++]*skill[j--]);
+            else 
+                return -1;
+
+        return answ;
     }
 };
 
 int main()
 {
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
 
     return 0;
 }

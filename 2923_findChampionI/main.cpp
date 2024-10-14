@@ -37,25 +37,27 @@ using st = stack<R>;
 
 class Solution {
 private:
-    int solve(int amount, const vector<int> &coins, vector<int> &dp){
-        if(!amount)
+    int steps(const int &n, int sizeToPaste, int actualVal, bool canPaste, vector<int> &dp){
+        if(sizeToPaste > n)
+            return 1e6;
+        
+        if(n == sizeToPaste)
             return 0;
 
-        if(dp[amount] != -1)
-            return dp[amount];
+        if(dp[sizeToPaste] != -1)
+            return dp[sizeToPaste];
 
-        int answ = 1e6;
-        for (size_t i = 0; i < coins.size(); i++)
-            if(amount - coins[i] >= 0)
-                answ = min(answ, 1 + solve(amount - coins[i], coins, dp));
-        return dp[amount] = answ;
+        if(!canPaste)
+            return dp[sizeToPaste] = 1 + steps(n, sizeToPaste, actualVal, true, dp);
+
+        return dp[sizeToPaste] = 1 + min(steps(n, sizeToPaste + actualVal * 2, actualVal, canPaste, dp), steps(n, sizeToPaste, sizeToPaste*2, false, dp));
     }
-
+    
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        int answ = solve(amount, coins, dp);
-        return answ >= 1e6 ? -1 : answ;
+    int minSteps(int n) {
+        vector<int> dp(n + 1, -1);
+
+        return steps(n, 1, 1,false, dp);
     }
 };
 

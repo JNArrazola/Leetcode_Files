@@ -36,26 +36,26 @@ template <typename R>
 using st = stack<R>;
 
 class Solution {
-private:
-    int solve(int amount, const vector<int> &coins, vector<int> &dp){
-        if(!amount)
-            return 0;
-
-        if(dp[amount] != -1)
-            return dp[amount];
-
-        int answ = 1e6;
-        for (size_t i = 0; i < coins.size(); i++)
-            if(amount - coins[i] >= 0)
-                answ = min(answ, 1 + solve(amount - coins[i], coins, dp));
-        return dp[amount] = answ;
-    }
-
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        int answ = solve(amount, coins, dp);
-        return answ >= 1e6 ? -1 : answ;
+    string capitalizeTitle(string t) {
+        string answ = "", temp = "";
+
+        for (size_t i = 0; i < t.size(); i++)
+        {
+            if(t[i] == ' ' || i == t.size() - 1){
+                if(i == t.size() - 1)
+                    temp+=tolower(t[i]);
+                
+                if(temp.size() > 2)
+                    temp[0] = toupper(temp[0]);
+                answ += temp + " ";
+                temp = "";
+                continue;
+            } 
+            temp+=tolower(t[i]);
+        }
+        
+        return answ.substr(0, answ.size() - 1);
     }
 };
 

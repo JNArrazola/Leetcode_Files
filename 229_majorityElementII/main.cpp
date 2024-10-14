@@ -35,34 +35,30 @@ using hm = unordered_map<J, A>;
 template <typename R>
 using st = stack<R>;
 
+
 class Solution {
-private:
-    int solve(int amount, const vector<int> &coins, vector<int> &dp){
-        if(!amount)
-            return 0;
-
-        if(dp[amount] != -1)
-            return dp[amount];
-
-        int answ = 1e6;
-        for (size_t i = 0; i < coins.size(); i++)
-            if(amount - coins[i] >= 0)
-                answ = min(answ, 1 + solve(amount - coins[i], coins, dp));
-        return dp[amount] = answ;
-    }
-
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        int answ = solve(amount, coins, dp);
-        return answ >= 1e6 ? -1 : answ;
+    vector<int> majorityElement(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int n = floor(nums.size()/3), fi = 0;
+        vector<int> answ;
+
+        for (size_t i = 0; i < nums.size(); i++)
+        {
+            if(i + 1 == nums.size() || nums[i + 1] != nums[fi]){
+                if(i + 1 - fi > n)
+                    answ.push_back(nums[fi]);
+                
+                fi = i+1;
+            }
+        }
+        
+        return answ;
     }
 };
 
 int main()
 {
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
 
     return 0;
 }

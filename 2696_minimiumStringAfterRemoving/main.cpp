@@ -35,34 +35,31 @@ using hm = unordered_map<J, A>;
 template <typename R>
 using st = stack<R>;
 
+/* You can apply some operations to this string where, in one operation, you can remove any occurrence of
+one of the substrings "AB" or "CD" from s.
+
+Return the minimum possible length of the resulting string that you can obtain. */
+
 class Solution {
-private:
-    int solve(int amount, const vector<int> &coins, vector<int> &dp){
-        if(!amount)
-            return 0;
-
-        if(dp[amount] != -1)
-            return dp[amount];
-
-        int answ = 1e6;
-        for (size_t i = 0; i < coins.size(); i++)
-            if(amount - coins[i] >= 0)
-                answ = min(answ, 1 + solve(amount - coins[i], coins, dp));
-        return dp[amount] = answ;
-    }
-
 public:
-    int coinChange(vector<int>& coins, int amount) {
-        vector<int> dp(amount + 1, -1);
-        int answ = solve(amount, coins, dp);
-        return answ >= 1e6 ? -1 : answ;
+    int minLength(string s) {
+        stack<char> st;
+
+        for (size_t i = 0; i < s.size(); i++)
+        {
+            if(!st.empty() && s[i] == 'B' && st.top() == 'A'){
+                st.pop();
+            } else if(!st.empty() && s[i] == 'D' && st.top() == 'C'){
+                st.pop();
+            } else 
+                st.push(s[i]);
+        }
+        return st.size();
     }
 };
 
 int main()
 {
-    cin.tie(nullptr);
-    ios_base::sync_with_stdio(false);
 
     return 0;
 }
